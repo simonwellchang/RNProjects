@@ -7,174 +7,207 @@
  */
 
 import React from 'react';
-import { Button, View, Text, Image, Platform } from 'react-native';
+import { Button, View, Text, Image, Platform, StyleSheet } from 'react-native';
+// import { Ionicons, SimpleLineIcons } from '@expo/vector-icons'
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
+import { createBottomTabNavigator } from 'react-navigation-tabs';
 
-// 客制Navigator Title
-class LogoTitle extends React.Component {
+class HomeDetailsScreen extends React.Component {
   render() {
     return (
-      <Image
-        source={require('./images/app_icon.png')}
-        style={{ width: 30, height: 30 }}
-      />
+      <View style={style.container}>
+        <Text>HomeDetailsScreen!</Text>
+      </View>
     );
   }
 }
 
-/**
- * navigate() 如果對象不存在，就產生一個新的
-*/
+class PromoteDetailsScreen extends React.Component {
+  render() {
+    return (
+      <View style={style.container}>
+        <Text>PromoteDetailsScreen!</Text>
+      </View>
+    );
+  }
+}
+
+class TaskDetailsScreen extends React.Component {
+  render() {
+    return (
+      <View style={style.container}>
+        <Text>TaskDetailsScreen!</Text>
+      </View>
+    );
+  }
+}
+
+class MineDetailsScreen extends React.Component {
+  render() {
+    return (
+      <View style={style.container}>
+        <Text>MineDetailsScreen!</Text>
+      </View>
+    );
+  }
+}
+
 class HomeScreen extends React.Component {
-
-  static navigationOptions = ({ navigation }) => {
-    return {
-      // headerTitle instead of title
-      headerTitle: () => <LogoTitle />,
-      headerRight: () => (
-        <Button
-          onPress={navigation.getParam('increaseCount')}
-            title="+1"
-            color={Platform.OS === 'ios' ? '#000' : null}
-        />
-      ),
-      headerLeft: () => (
-        <Button
-          onPress={() => alert('點到左邊的按鈕!')}
-            title="左邊按鈕"
-            color="#000"
-        />
-      )
-    };
-  };
-
-  componentWillMount() {
-    this.props.navigation.setParams({ increaseCount: this._increaseCount });
-  };
-
-  state = {
-    count: 0,
-  };
-
-  _increaseCount = () => {
-    this.setState({ count: this.state.count + 1 });
-  };
-
   render() {
     return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Text>Home Screen</Text>
-        <Text>Count: {this.state.count}</Text>
+      <View style={style.container}>
+        <Text>首頁</Text>
         <Button
-          title="Go to Details!"
-          onPress={() => {
-            this.props.navigation.navigate('Details', {
-              itemId: 86,
-              otherParam: '詳細頁面',
-            });
-          }}
+          title="導到分享頁"
+          onPress={() => this.props.navigation.navigate('Promote')}
+        />
+        <Button
+          title="導到首頁詳細頁"
+          onPress={() => this.props.navigation.navigate('HomeDetails')}
         />
       </View>
     );
   }
 }
 
-/**
- * push() 每次產生一個新的
- * goBack() 回到上一層
- * popToTop() 回到最初的第一層
-*/
-class DetailsScreen extends React.Component {
-  static navigationOptions = ({ navigation, navigationOptions }) => {
-    const { params } = navigation.state;
-
-    return {
-      title: params ? params.otherParam : 'A Nested Details Screen',
-      /* These values are used instead of the shared configuration! */
-      headerStyle: {
-        backgroundColor: navigationOptions.headerTintColor,
-      },
-      headerTintColor: navigationOptions.headerStyle.backgroundColor,
-    };
-  };
-
-  // static navigationOptions = ({ navigation }) => {
-  //   return {
-  //     title: navigation.getParam('otherParam', null),
-  //   };
-  // };
-
+class PromoteScreen extends React.Component {
   render() {
-    /* 2. Get the param, provide a fallback value if not available */
-    const { navigation } = this.props;
-    const itemId = navigation.getParam('itemId', 'NO-ID');
-    const otherParam = navigation.getParam('otherParam', 'some default value');
-
     return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Text>Details Screen</Text>
-        <Text>
-          itemId: {JSON.stringify(itemId)}
-        </Text>
-        <Text>
-          otherParam: {JSON.stringify(otherParam)}
-        </Text>
+      <View style={style.container}>
+        <Text>分享</Text>
         <Button
-          title="Go to Details... again"
-          onPress={() =>
-            navigation.push('Details', {
-              itemId: Math.floor(Math.random() * 100),
-              otherParam: itemId.toString(),
-            })
-          }
+          title="導到任務頁"
+          onPress={() => this.props.navigation.navigate('Task')}
         />
         <Button
-          title="Update the Title"
-          onPress={() =>
-            this.props.navigation.setParams({
-              otherParam: 'Updated!'
-            })
-          }
-        />
-        <Button
-          title="Go to Back!"
-          onPress={() => this.props.navigation.goBack()}
-        />
-        <Button
-          title="Go to Root!"
-          onPress={() => this.props.navigation.popToTop()}
+          title="導到分享詳細頁"
+          onPress={() => this.props.navigation.navigate('PromoteDetails')}
         />
       </View>
     );
   }
 }
 
-const AppNavigator = createStackNavigator(
-  {
+class TaskScreen extends React.Component {
+  render() {
+    return (
+      <View style={style.container}>
+        <Text>任務</Text>
+        <Button
+          title="導到我的頁"
+          onPress={() => this.props.navigation.navigate('Mine')}
+        />
+        <Button
+          title="導到任務詳細頁"
+          onPress={() => this.props.navigation.navigate('TaskDetails')}
+        />
+      </View>
+    );
+  }
+}
+
+class MineScreen extends React.Component {
+  render() {
+    return (
+      <View style={style.container}>
+        <Text>我的</Text>
+        <Button
+          title="導到首頁"
+          onPress={() => this.props.navigation.navigate('Home')}
+        />
+        <Button
+          title="導到我的詳細頁"
+          onPress={() => this.props.navigation.navigate('MineDetails')}
+        />
+      </View>
+    );
+  }
+}
+
+const style = StyleSheet.create({
+  container: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center'
+  }
+});
+
+const HomeStack = createStackNavigator({
+  Home: HomeScreen,
+  HomeDetails: HomeDetailsScreen,
+});
+
+const PromoteStack = createStackNavigator({
+  Promote: PromoteScreen,
+  PromoteDetails: PromoteDetailsScreen,
+});
+
+const TaskStack = createStackNavigator({
+  Task: TaskScreen,
+  TaskDetails: TaskDetailsScreen,
+});
+
+const MineStack = createStackNavigator({
+  Mine: MineScreen,
+  MineDetails: MineDetailsScreen,
+});
+
+export default createAppContainer(
+  createBottomTabNavigator({
     Home: {
-      screen: HomeScreen,
+      screen: HomeStack,
+      navigationOptions: {
+          tabBarLabel: '首頁',
+          tabBarIcon: ({ focused, tintColor }) => (
+            <Image
+              source={focused ? require('./images/s_1.png') : require('./images/1.png')}
+              style={{ width: 20, height: 20 }}
+            />
+          ),
+      }
     },
-    Details: {
-      screen: DetailsScreen,
+    Promote: {
+      screen: PromoteStack,
+      navigationOptions: {
+          tabBarLabel: '分享',
+          tabBarIcon: ({ focused, tintColor }) => (
+            <Image
+              source={focused ? require('./images/s_2.png') : require('./images/2.png')}
+              style={{ width: 20, height: 20 }}
+            />
+          ),
+      }
     },
+    Task: {
+      screen: TaskStack,
+      navigationOptions: {
+          tabBarLabel: '任務',
+          tabBarIcon: ({ focused, tintColor }) => (
+            <Image
+              source={focused ? require('./images/s_3.png') : require('./images/3.png')}
+              style={{ width: 20, height: 20 }}
+            />
+          ),
+      }
+    },
+    Mine: {
+      screen: MineStack,
+      navigationOptions: {
+          tabBarLabel: '我的',
+          tabBarIcon: ({ focused, tintColor }) => (
+            <Image
+              source={focused ? require('./images/s_4.png') : require('./images/4.png')}
+              style={{ width: 20, height: 20 }}
+            />
+          ),
+      },
+    }
   },
   {
-    initialRouteName: 'Home',
-    defaultNavigationOptions: {
-      headerStyle: {
-        backgroundColor: '#f8c037',
-      },
-      headerTintColor: '#000',
-      headerTitleStyle: {
-        fontWeight: 'bold',
-      },
-      headerBackImage: <Image
-        style={{ width: 20, height: 20 }}
-        source={require('./images/star.png')}
-        />,
+    tabBarOptions: {
+      activeTintColor: '#f8c037',
+      inactiveTintColor: 'grey',
     },
-  }
+  })
 );
-
-export default createAppContainer(AppNavigator);
